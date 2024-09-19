@@ -2,6 +2,7 @@ package com.tokio.transfer.scheduler.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Objects;
 
 public class Decimal extends ValueObject<BigDecimal> {
 
@@ -33,5 +34,18 @@ public class Decimal extends ValueObject<BigDecimal> {
     @Override
     public String toString() {
         return symbol != null && !symbol.isEmpty() ? symbol + " " + value : value.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Decimal decimal = (Decimal) o;
+        return Objects.equals(getValue(), decimal.getValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getValue());
     }
 }
