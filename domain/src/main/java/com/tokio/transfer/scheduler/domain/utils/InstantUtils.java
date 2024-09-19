@@ -18,6 +18,7 @@ public final class InstantUtils {
     }
 
     private static Instant convertStringToInstant(String dateString) {
+        if (dateString == null) return null;
         try {
             DateTimeFormatter formatter = null;
             if (dateString.matches("^\\d\\d/\\d\\d/\\d{2}$")) {

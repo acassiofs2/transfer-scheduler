@@ -38,7 +38,7 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
         this.destinationAccount = aDestinationAccount;
         this.amount = Decimal.of(aAmount, 2, "R$");
         this.tax = Decimal.of(aTax, 1);
-        this.transferDate = Objects.requireNonNull(Date.of(aTransferDate), "'transferDate' should not be null");
+        this.transferDate = Date.of(aTransferDate);
         this.active = isActive;
         this.createdAt = Objects.requireNonNull(aCreationDate, "'createdAt' should not be null");
         this.updatedAt = Objects.requireNonNull(aUpdateDate, "'updatedAt' should not be null");
@@ -108,6 +108,6 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
 
     @Override
     public void validate(ValidationHandler handler) {
-
+        new TransferenceValidator(this, handler).validate();
     }
 }

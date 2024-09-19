@@ -21,6 +21,7 @@ public class Decimal extends ValueObject<BigDecimal> {
     }
 
     public static Decimal of(final Double aValue, final Integer aScale) {
+        if (aValue == null) return null;
         int scale = aScale != null && aScale >= 0 ? aScale : 2;
         final var value = BigDecimal.valueOf(aValue);
         return new Decimal(value.setScale(scale, RoundingMode.HALF_UP), null);

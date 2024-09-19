@@ -14,6 +14,7 @@ public class Date extends ValueObject<Instant> {
     }
 
     public static Date of(String date) {
+        if (date == null) return null;
         return new Date(InstantUtils.of(date));
     }
 
