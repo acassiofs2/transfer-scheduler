@@ -14,20 +14,19 @@ public class TransferenceTest {
         final var expectedSourceAccount = "0123456789";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
-        final var expectedTax = 2.5;
-        final var expectedTransferDate = "25/09/2025";
+        final var expectedTransferDate = "01/01/2025";
         final var expectedIsActive = true;
 
         final var actualTransference =
-                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTax, expectedTransferDate, expectedIsActive);
+                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
 
         Assertions.assertNotNull(actualTransference);
         Assertions.assertNotNull(actualTransference.getId());
         Assertions.assertEquals(expectedSourceAccount, actualTransference.getSourceAccount());
         Assertions.assertEquals(expectedDestinationAccount, actualTransference.getDestinationAccount());
         Assertions.assertEquals(Decimal.of(expectedAmount, 2), actualTransference.getAmount());
-        Assertions.assertEquals(Decimal.of(expectedTax, 1), actualTransference.getTax());
         Assertions.assertEquals(Date.of(expectedTransferDate), actualTransference.getTransferDate());
+        Assertions.assertTrue(actualTransference.isActive());
         Assertions.assertNotNull(actualTransference.getCreatedAt());
         Assertions.assertNotNull(actualTransference.getUpdatedAt());
         Assertions.assertNull(actualTransference.getDeletedAt());
@@ -41,11 +40,10 @@ public class TransferenceTest {
         final var expectedSourceAccount = "0123456789";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
-        final var expectedTax = 2.5;
         final var expectedIsActive = true;
 
         final var actualTransference =
-                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTax, expectedTransferDate, expectedIsActive);
+                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
 
         final var actualException =
                 Assertions.assertThrows(DomainException.class, () -> actualTransference.validate(new ThrowsValidationHandler()));
@@ -62,11 +60,10 @@ public class TransferenceTest {
         final var expectedSourceAccount = "0123456789";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
-        final var expectedTax = 2.5;
         final var expectedIsActive = true;
 
         final var actualTransference =
-                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTax, expectedTransferDate, expectedIsActive);
+                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
 
         final var actualException =
                 Assertions.assertThrows(DomainException.class, () -> actualTransference.validate(new ThrowsValidationHandler()));
@@ -83,11 +80,30 @@ public class TransferenceTest {
         final var expectedSourceAccount = "01234";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
-        final var expectedTax = 2.5;
         final var expectedIsActive = true;
 
         final var actualTransference =
-                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTax, expectedTransferDate, expectedIsActive);
+                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
+
+        final var actualException =
+                Assertions.assertThrows(DomainException.class, () -> actualTransference.validate(new ThrowsValidationHandler()));
+
+        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).getMessage());
+    }
+
+    @Test
+    public void givenAnTaxNotApplicable_whenCallNewTransferenceAndValidate_thenShouldReceiveError() {
+        final String expectedTransferDate = "25/10/2025";
+        final var expectedErrorCount = 1;
+        final var expectedErrorMessage = "Tax is not applicable";
+        final var expectedSourceAccount = "0123456789";
+        final var expectedDestinationAccount = "9876543210";
+        final var expectedAmount = 99.99;
+        final var expectedIsActive = true;
+
+        final var actualTransference =
+                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
 
         final var actualException =
                 Assertions.assertThrows(DomainException.class, () -> actualTransference.validate(new ThrowsValidationHandler()));

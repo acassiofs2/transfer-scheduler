@@ -19,6 +19,7 @@ public class TransferenceValidator extends Validator {
     public void validate() {
         checkTransferDateContraints();
         checkAccountConstraints();
+        checkTaxConstraints();
     }
 
     private void checkTransferDateContraints() {
@@ -49,6 +50,13 @@ public class TransferenceValidator extends Validator {
         }
         if (!destinationAccount.matches(ACCOUNT_PATTERN)) {
             this.validationHandler().append(new Error("'destinationAccount' should match the pattern 'XXXXXXXXXX'"));
+        }
+    }
+
+    private void checkTaxConstraints() {
+        final var tax = this.transference.getTax();
+        if (tax == null) {
+            this.validationHandler().append(new Error("Tax is not applicable"));
         }
     }
 }
