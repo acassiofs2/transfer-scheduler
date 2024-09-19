@@ -15,7 +15,7 @@ public class TransferenceTest {
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
         final var expectedTax = 2.5;
-        final var expectedTransferDate = "25/09/2024";
+        final var expectedTransferDate = "25/09/2025";
         final var expectedIsActive = true;
 
         final var actualTransference =
@@ -60,6 +60,27 @@ public class TransferenceTest {
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'transferDate' should not be earlier than the current date";
         final var expectedSourceAccount = "0123456789";
+        final var expectedDestinationAccount = "9876543210";
+        final var expectedAmount = 99.99;
+        final var expectedTax = 2.5;
+        final var expectedIsActive = true;
+
+        final var actualTransference =
+                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTax, expectedTransferDate, expectedIsActive);
+
+        final var actualException =
+                Assertions.assertThrows(DomainException.class, () -> actualTransference.validate(new ThrowsValidationHandler()));
+
+        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).getMessage());
+    }
+
+    @Test
+    public void givenAnInvalidAccount_whenCallNewTransferenceAndValidate_thenShouldReceiveError() {
+        final String expectedTransferDate = "25/09/2025";
+        final var expectedErrorCount = 1;
+        final var expectedErrorMessage = "'sourceAccount' should match the pattern 'XXXXXXXXXX'";
+        final var expectedSourceAccount = "01234";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
         final var expectedTax = 2.5;
