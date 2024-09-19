@@ -1,0 +1,5 @@
+rootProject.name = 'transfer-scheduler'
+include 'domain'
+include 'application'
+include 'infrastructure'
+
