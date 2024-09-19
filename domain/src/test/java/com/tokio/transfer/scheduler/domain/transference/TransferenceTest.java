@@ -1,5 +1,7 @@
 package com.tokio.transfer.scheduler.domain.transference;
 
+import com.tokio.transfer.scheduler.domain.Date;
+import com.tokio.transfer.scheduler.domain.Decimal;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,19 +14,20 @@ public class TransferenceTest {
         final var expectedAmount = 99.99;
         final var expectedTax = 2.5;
         final var expectedTransferDate = "25/09/2024";
+        final var expectedIsActive = true;
 
         final var actualTransference =
-                Transference.newTransfer(expectedSourceAccount, expectedDestinationAccount, expectedValue, expectedTax, transferDate);
+                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTax, expectedTransferDate, expectedIsActive);
 
         Assertions.assertNotNull(actualTransference);
         Assertions.assertNotNull(actualTransference.getId());
         Assertions.assertEquals(expectedSourceAccount, actualTransference.getSourceAccount());
         Assertions.assertEquals(expectedDestinationAccount, actualTransference.getDestinationAccount());
-        Assertions.assertEquals(expectedAmount, actualTransference.getAmount());
-        Assertions.assertEquals(expectedTax, actualTransference.getTax());
-        Assertions.assertEquals(expectedTransferDate, actualTransference.getTransferDate());
-        Assertions.assertNotNull(actualTransference.getCreatedAt);
+        Assertions.assertEquals(Decimal.of(expectedAmount, 2), actualTransference.getAmount());
+        Assertions.assertEquals(Decimal.of(expectedTax, 1), actualTransference.getTax());
+        Assertions.assertEquals(Date.of(expectedTransferDate), actualTransference.getTransferDate());
+        Assertions.assertNotNull(actualTransference.getCreatedAt());
         Assertions.assertNotNull(actualTransference.getUpdatedAt());
-        Assertions.assertNotNull(actualTransference.getDeletedAt());
+        Assertions.assertNull(actualTransference.getDeletedAt());
     }
 }
