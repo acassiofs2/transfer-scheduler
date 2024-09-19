@@ -2,6 +2,8 @@ package com.tokio.transfer.scheduler.domain.transference;
 
 import com.tokio.transfer.scheduler.domain.Date;
 import com.tokio.transfer.scheduler.domain.Decimal;
+import com.tokio.transfer.scheduler.domain.exceptions.DomainException;
+import com.tokio.transfer.scheduler.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,5 +31,26 @@ public class TransferenceTest {
         Assertions.assertNotNull(actualTransference.getCreatedAt());
         Assertions.assertNotNull(actualTransference.getUpdatedAt());
         Assertions.assertNull(actualTransference.getDeletedAt());
+    }
+
+    @Test
+    public void givenAnInvalidNullTransferDate_whenCallNewTransferenceAndValidate_thenShouldReceiveError() {
+        final String expectedTransferDate = null;
+        final var expectedErrorCount = 1;
+        final var expectedErrorMessage = "'transferDate' should not be null";
+        final var expectedSourceAccount = "XXXXXXXXXX";
+        final var expectedDestinationAccount = "XXXXXXXXXX";
+        final var expectedAmount = 99.99;
+        final var expectedTax = 2.5;
+        final var expectedIsActive = true;
+
+        final var actualTransference =
+                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTax, expectedTransferDate, expectedIsActive);
+
+        final var actualException =
+                Assertions.assertThrows(DomainException.class, () -> actualTransference.validate(new ThrowsValidationHandler()));
+
+        Assertions.assertEquals(expectedErrorCount, actualException.getErrors().size());
+        Assertions.assertEquals(expectedErrorMessage, actualException.getErrors().get(0).getMessage());
     }
 }
