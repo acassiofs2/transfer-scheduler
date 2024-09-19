@@ -37,7 +37,7 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
         this.sourceAccount = aSourceAccount;
         this.destinationAccount = aDestinationAccount;
         this.amount = Decimal.of(aAmount, 2, "R$");
-        this.tax = Decimal.of(aTax, 2);
+        this.tax = Decimal.of(aTax, 1);
         this.transferDate = Objects.requireNonNull(Date.of(aTransferDate), "'transferDate' should not be null");
         this.active = isActive;
         this.createdAt = Objects.requireNonNull(aCreationDate, "'createdAt' should not be null");
