@@ -9,11 +9,11 @@ public class CreateTransferenceOutput {
         this.id = id;
     }
 
-    public CreateTransferenceOutput from(final String anId) {
+    public static CreateTransferenceOutput from(final String anId) {
         return new CreateTransferenceOutput(anId);
     }
 
-    public CreateTransferenceOutput from(final Transference anTransference) {
+    public static CreateTransferenceOutput from(final Transference anTransference) {
         return new CreateTransferenceOutput(anTransference.getId().getValue());
     }
 

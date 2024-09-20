@@ -1,16 +1,15 @@
 package com.tokio.transfer.scheduler.application.transference.create;
 
-import com.tokio.transfer.scheduler.domain.Date;
-import com.tokio.transfer.scheduler.domain.Decimal;
+import java.time.LocalDate;
 
 public class CreateTransferenceCommand {
     private String sourceAccount;
     private String destinationAccount;
-    private Decimal amount;
-    private Date transferDate;
+    private Double amount;
+    private LocalDate transferDate;
     private boolean active;
 
-    private CreateTransferenceCommand(String sourceAccount, String destinationAccount, Decimal amount, Date transferDate, boolean active) {
+    private CreateTransferenceCommand(String sourceAccount, String destinationAccount, Double amount, LocalDate transferDate, boolean active) {
         this.sourceAccount = sourceAccount;
         this.destinationAccount = destinationAccount;
         this.amount = amount;
@@ -21,8 +20,8 @@ public class CreateTransferenceCommand {
     public static CreateTransferenceCommand with(
             final String aSourceAccount,
             final String aDestinationAccount,
-            final Decimal aAmount,
-            final Date aTransferDate,
+            final Double aAmount,
+            final LocalDate aTransferDate,
             final boolean isActive
     ) {
         return new CreateTransferenceCommand(aSourceAccount, aDestinationAccount, aAmount, aTransferDate, isActive);
@@ -36,11 +35,11 @@ public class CreateTransferenceCommand {
         return destinationAccount;
     }
 
-    public Decimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public Date getTransferDate() {
+    public LocalDate getTransferDate() {
         return transferDate;
     }
 
