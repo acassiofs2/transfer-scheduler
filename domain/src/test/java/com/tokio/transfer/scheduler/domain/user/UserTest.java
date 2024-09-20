@@ -17,7 +17,7 @@ public class UserTest {
         Assertions.assertNotNull(actualUser);
         Assertions.assertNotNull(actualUser.getId());
         Assertions.assertEquals(expectedName, actualUser.getName());
-        Assertions.assertEquals(expectedName, actualUser.getLogin());
-        Assertions.assertEquals(expectedName, actualUser.isActive());
+        Assertions.assertEquals(expectedLogin, actualUser.getLogin());
+        Assertions.assertEquals(expectedIsActive, actualUser.isActive());
     }
 }
