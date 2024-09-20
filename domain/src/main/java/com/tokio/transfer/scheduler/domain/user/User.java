@@ -26,11 +26,6 @@ public class User extends AggregateRoot<UserID> {
         return new User(id, aName, aLogin, isActive);
     }
 
-    @Override
-    public void validate(ValidationHandler handler) {
-
-    }
-
     public String getName() {
         return name;
     }
@@ -41,5 +36,10 @@ public class User extends AggregateRoot<UserID> {
 
     public boolean isActive() {
         return active;
+    }
+
+    @Override
+    public void validate(ValidationHandler handler) {
+        new UserValidator(this, handler).validate();
     }
 }
