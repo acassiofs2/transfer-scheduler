@@ -3,9 +3,13 @@ package com.tokio.transfer.scheduler.domain.transference;
 import com.tokio.transfer.scheduler.domain.Date;
 import com.tokio.transfer.scheduler.domain.Decimal;
 import com.tokio.transfer.scheduler.domain.exceptions.DomainException;
+import com.tokio.transfer.scheduler.domain.utils.DecimalUtils;
+import com.tokio.transfer.scheduler.domain.utils.DateUtils;
 import com.tokio.transfer.scheduler.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
 
 public class TransferenceTest {
 
@@ -21,6 +25,32 @@ public class TransferenceTest {
                 Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
 
         Assertions.assertNotNull(actualTransference);
+        Assertions.assertNotNull(actualTransference.getId());
+        Assertions.assertEquals(expectedSourceAccount, actualTransference.getSourceAccount());
+        Assertions.assertEquals(expectedDestinationAccount, actualTransference.getDestinationAccount());
+        Assertions.assertEquals(Decimal.of(expectedAmount, 2), actualTransference.getAmount());
+        Assertions.assertEquals(Date.of(expectedTransferDate), actualTransference.getTransferDate());
+        Assertions.assertTrue(actualTransference.isActive());
+        Assertions.assertNotNull(actualTransference.getCreatedAt());
+        Assertions.assertNotNull(actualTransference.getUpdatedAt());
+        Assertions.assertNull(actualTransference.getDeletedAt());
+    }
+
+    @Test
+    public void givenAValidParamsAndTaxIsApplicable_whenCallNewTransference_thenShouldReturnRightTax() {
+        final var expectedSourceAccount = "0123456789";
+        final var expectedDestinationAccount = "9876543210";
+        final var expectedAmount = 99.99;
+        final var amountValue = BigDecimal.valueOf(expectedAmount);
+        final var expectedTax = DecimalUtils.calculatePercent(amountValue, 8.2);
+        final var expectedTransferDate = DateUtils.now().plusDays(11);
+        final var expectedIsActive = true;
+
+        final var actualTransference =
+                Transference.newTransference(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
+
+        Assertions.assertNotNull(actualTransference);
+        Assertions.assertEquals(expectedTax, actualTransference.getTax());
         Assertions.assertNotNull(actualTransference.getId());
         Assertions.assertEquals(expectedSourceAccount, actualTransference.getSourceAccount());
         Assertions.assertEquals(expectedDestinationAccount, actualTransference.getDestinationAccount());
