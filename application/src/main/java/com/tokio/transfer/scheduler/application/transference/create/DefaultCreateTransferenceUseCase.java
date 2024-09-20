@@ -1,7 +1,5 @@
 package com.tokio.transfer.scheduler.application.transference.create;
 
-import com.tokio.transfer.scheduler.domain.Date;
-import com.tokio.transfer.scheduler.domain.Decimal;
 import com.tokio.transfer.scheduler.domain.transference.Transference;
 import com.tokio.transfer.scheduler.domain.transference.TransferenceGateway;
 import com.tokio.transfer.scheduler.domain.validation.handler.Notification;
