@@ -1,25 +1,30 @@
 package com.tokio.transfer.scheduler.domain;
 
-import com.tokio.transfer.scheduler.domain.utils.InstantUtils;
+import com.tokio.transfer.scheduler.domain.utils.DateUtils;
 
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 
-public class Date extends ValueObject<Instant> {
+public class Date extends ValueObject<LocalDate> {
 
-    private final Instant value;
+    private final LocalDate value;
 
-    private Date(Instant value) {
+    private Date(LocalDate value) {
         this.value = value;
+    }
+
+    public static Date of(LocalDate date) {
+        if (date == null) return null;
+        return new Date(date);
     }
 
     public static Date of(String date) {
         if (date == null) return null;
-        return new Date(InstantUtils.of(date));
+        return new Date(DateUtils.of(date));
     }
 
     @Override
-    public Instant getValue() {
+    public LocalDate getValue() {
         return value;
     }
 

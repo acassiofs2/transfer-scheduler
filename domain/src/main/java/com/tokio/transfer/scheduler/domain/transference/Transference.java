@@ -3,12 +3,15 @@ package com.tokio.transfer.scheduler.domain.transference;
 import com.tokio.transfer.scheduler.domain.AggregateRoot;
 import com.tokio.transfer.scheduler.domain.Date;
 import com.tokio.transfer.scheduler.domain.Decimal;
-import com.tokio.transfer.scheduler.domain.utils.InstantUtils;
+import com.tokio.transfer.scheduler.domain.utils.DecimalUtils;
+import com.tokio.transfer.scheduler.domain.utils.DateUtils;
 import com.tokio.transfer.scheduler.domain.validation.ValidationHandler;
 
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
 import java.util.Objects;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Transference extends AggregateRoot<TransferenceID> implements Cloneable {
 
@@ -43,6 +46,28 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
         this.deletedAt = aDeleteDate;
     }
 
+    private Transference(
+            final TransferenceID anID,
+            final String aSourceAccount,
+            final String aDestinationAccount,
+            final Double aAmount,
+            final LocalDate aTransferDate,
+            final boolean isActive,
+            final Instant aCreationDate,
+            final Instant aUpdateDate,
+            final Instant aDeleteDate
+    ) {
+        super(anID);
+        this.sourceAccount = aSourceAccount;
+        this.destinationAccount = aDestinationAccount;
+        this.amount = Decimal.of(aAmount, 2, "R$");
+        this.transferDate = Date.of(aTransferDate);
+        this.active = isActive;
+        this.createdAt = Objects.requireNonNull(aCreationDate, "'createdAt' should not be null");
+        this.updatedAt = Objects.requireNonNull(aUpdateDate, "'updatedAt' should not be null");
+        this.deletedAt = aDeleteDate;
+    }
+
     public static Transference newTransference(
             final String aSourceAccount,
             final String aDestinationAccount,
@@ -51,7 +76,22 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
             final boolean isActive
     ) {
         final var id = TransferenceID.unique();
-        final var now = InstantUtils.now();
+        final var now = DateUtils.nowInstant();
+        final var deletedAt = isActive ? null : now;
+        return new Transference(
+                id, aSourceAccount, aDestinationAccount, aAmount, aTransferDate, isActive, now, now, deletedAt
+        );
+    }
+
+    public static Transference newTransference(
+            final String aSourceAccount,
+            final String aDestinationAccount,
+            final Double aAmount,
+            final LocalDate aTransferDate,
+            final boolean isActive
+    ) {
+        final var id = TransferenceID.unique();
+        final var now = DateUtils.nowInstant();
         final var deletedAt = isActive ? null : now;
         return new Transference(
                 id, aSourceAccount, aDestinationAccount, aAmount, aTransferDate, isActive, now, now, deletedAt
@@ -71,13 +111,16 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
     }
 
     public Decimal getTax() {
-        return calculateTax();
+        var taxPerCentage = calculateTax();
+        if (taxPerCentage == null) taxPerCentage = 0.0;
+        var amountValue = getAmount().getValue();
+        return DecimalUtils.calculatePercent(amountValue, taxPerCentage);
     }
 
-    public Decimal calculateTax() {
+    public Double calculateTax() {
         Double aTax = null;
-        if (transferDate != null && transferDate.getValue() != null) {
-            final var daysCount = ChronoUnit.DAYS.between(InstantUtils.now(), transferDate.getValue());
+        if (getTransferDate() != null && getTransferDate().getValue() != null) {
+            final var daysCount = DAYS.between(DateUtils.now(), getTransferDate().getValue());
             if (daysCount == 0) aTax = 2.5;
             else if (daysCount >= 1 && daysCount <= 10) aTax = 0.0;
             else if (daysCount >= 11 && daysCount <= 20) aTax = 8.2;
@@ -85,7 +128,7 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
             else if (daysCount >= 31 && daysCount <= 40) aTax = 4.7;
             else if (daysCount >= 41 && daysCount <= 50) aTax = 1.7;
         }
-        return Decimal.of(aTax, 1);
+        return aTax;
     }
 
     public Date getTransferDate() {

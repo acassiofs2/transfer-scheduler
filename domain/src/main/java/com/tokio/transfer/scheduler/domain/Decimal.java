@@ -27,6 +27,12 @@ public class Decimal extends ValueObject<BigDecimal> {
         return new Decimal(value.setScale(scale, RoundingMode.HALF_UP), null);
     }
 
+    public static Decimal of(final BigDecimal aValue, final Integer aScale) {
+        if (aValue == null) return null;
+        int scale = aScale != null && aScale >= 0 ? aScale : 2;
+        return new Decimal(aValue.setScale(scale, RoundingMode.HALF_UP), null);
+    }
+
     @Override
     public BigDecimal getValue() {
         return value;

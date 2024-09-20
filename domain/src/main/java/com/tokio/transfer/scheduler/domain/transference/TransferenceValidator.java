@@ -1,6 +1,6 @@
 package com.tokio.transfer.scheduler.domain.transference;
 
-import com.tokio.transfer.scheduler.domain.utils.InstantUtils;
+import com.tokio.transfer.scheduler.domain.utils.DateUtils;
 import com.tokio.transfer.scheduler.domain.validation.Error;
 import com.tokio.transfer.scheduler.domain.validation.ValidationHandler;
 import com.tokio.transfer.scheduler.domain.validation.Validator;
@@ -28,7 +28,7 @@ public class TransferenceValidator extends Validator {
             this.validationHandler().append(new Error("'transferDate' should not be null"));
             return;
         }
-        if (transferDate.getValue().isBefore(InstantUtils.now())) {
+        if (transferDate.getValue().isBefore(DateUtils.now())) {
             this.validationHandler().append(new Error("'transferDate' should not be earlier than the current date"));
         }
     }
@@ -54,7 +54,7 @@ public class TransferenceValidator extends Validator {
     }
 
     private void checkTaxConstraints() {
-        final var tax = this.transference.getTax();
+        final var tax = this.transference.calculateTax();
         if (tax == null) {
             this.validationHandler().append(new Error("Tax is not applicable"));
         }

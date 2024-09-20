@@ -2,22 +2,25 @@ package com.tokio.transfer.scheduler.domain.utils;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
-public final class InstantUtils {
+public final class DateUtils {
 
-    private InstantUtils() {
+    private DateUtils() {
     }
 
-    public static Instant now() {
+    public static Instant nowInstant() {
         return Instant.now().truncatedTo(ChronoUnit.MICROS);
     }
 
-    private static Instant convertStringToInstant(String dateString) {
+    public static LocalDate now() {
+        return LocalDate.now(ZoneId.of("UTC-3"));
+    }
+
+    private static LocalDate convertStringToLocalDateTime(String dateString) {
         if (dateString == null) return null;
         try {
             DateTimeFormatter formatter = null;
@@ -34,8 +37,7 @@ public final class InstantUtils {
                 formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             }
             if (formatter != null) {
-                LocalDateTime localDateTime = LocalDate.parse(dateString, formatter).atTime(0,0);
-                return localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+                return LocalDate.parse(dateString, formatter);
             }
             throw new DateTimeParseException("","",0);
         } catch (DateTimeParseException e) {
@@ -44,7 +46,7 @@ public final class InstantUtils {
         }
     }
 
-    public static Instant of(String value) {
-        return convertStringToInstant(value);
+    public static LocalDate of(String value) {
+        return convertStringToLocalDateTime(value);
     }
 }
