@@ -68,6 +68,28 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
         this.deletedAt = aDeleteDate;
     }
 
+    private Transference(
+            final TransferenceID anID,
+            final String aSourceAccount,
+            final String aDestinationAccount,
+            final Decimal aAmount,
+            final Date aTransferDate,
+            final boolean isActive,
+            final Instant aCreationDate,
+            final Instant aUpdateDate,
+            final Instant aDeleteDate
+    ) {
+        super(anID);
+        this.sourceAccount = aSourceAccount;
+        this.destinationAccount = aDestinationAccount;
+        this.amount = aAmount;
+        this.transferDate = aTransferDate;
+        this.active = isActive;
+        this.createdAt = Objects.requireNonNull(aCreationDate, "'createdAt' should not be null");
+        this.updatedAt = Objects.requireNonNull(aUpdateDate, "'updatedAt' should not be null");
+        this.deletedAt = aDeleteDate;
+    }
+
     public static Transference newTransference(
             final String aSourceAccount,
             final String aDestinationAccount,
@@ -88,6 +110,21 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
             final String aDestinationAccount,
             final Double aAmount,
             final LocalDate aTransferDate,
+            final boolean isActive
+    ) {
+        final var id = TransferenceID.unique();
+        final var now = DateUtils.nowInstant();
+        final var deletedAt = isActive ? null : now;
+        return new Transference(
+                id, aSourceAccount, aDestinationAccount, aAmount, aTransferDate, isActive, now, now, deletedAt
+        );
+    }
+
+    public static Transference newTransference(
+            final String aSourceAccount,
+            final String aDestinationAccount,
+            final Decimal aAmount,
+            final Date aTransferDate,
             final boolean isActive
     ) {
         final var id = TransferenceID.unique();
