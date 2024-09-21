@@ -18,7 +18,7 @@ public class TransferenceTest {
         final var expectedSourceAccount = "0123456789";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
-        final var expectedTransferDate = "01/01/2025";
+        final var expectedTransferDate = DateUtils.now().plusDays(11);
         final var expectedIsActive = true;
 
         final var actualTransference =
@@ -104,7 +104,7 @@ public class TransferenceTest {
 
     @Test
     public void givenAnInvalidAccount_whenCallNewTransferenceAndValidate_thenShouldReceiveError() {
-        final String expectedTransferDate = "25/09/2025";
+        final var expectedTransferDate = DateUtils.now().plusDays(11);
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'sourceAccount' should match the pattern 'XXXXXXXXXX'";
         final var expectedSourceAccount = "01234";
@@ -123,8 +123,8 @@ public class TransferenceTest {
     }
 
     @Test
-    public void givenAnTaxNotApplicable_whenCallNewTransferenceAndValidate_thenShouldReceiveError() {
-        final String expectedTransferDate = "25/10/2025";
+    public void givenATaxNotApplicable_whenCallNewTransferenceAndValidate_thenShouldReceiveError() {
+        final var expectedTransferDate = DateUtils.now().plusDays(81);
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "Tax is not applicable";
         final var expectedSourceAccount = "0123456789";
