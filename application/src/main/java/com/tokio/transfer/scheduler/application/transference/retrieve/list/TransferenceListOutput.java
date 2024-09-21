@@ -45,4 +45,32 @@ public class TransferenceListOutput {
                 aTransference.getCreatedAt()
         );
     }
+
+    public TransferenceID getId() {
+        return id;
+    }
+
+    public String getSourceAccount() {
+        return sourceAccount;
+    }
+
+    public String getDestinationAccount() {
+        return destinationAccount;
+    }
+
+    public Decimal getAmount() {
+        return amount;
+    }
+
+    public Date getTransferDate() {
+        return transferDate;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 }

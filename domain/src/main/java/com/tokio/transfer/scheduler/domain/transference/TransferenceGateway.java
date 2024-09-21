@@ -16,7 +16,7 @@ public interface TransferenceGateway {
 
     Transference update(Transference aTransference);
 
-    Pagination<Transference> findALl(SearchQuery aQuery);
+    Pagination<Transference> findAll(SearchQuery aQuery);
 
     List<TransferenceID> existsById(Iterable<TransferenceID> ids);
 }

@@ -16,7 +16,7 @@ public class DefaultListTransferencesUseCase extends ListTransferencesUseCase {
 
     @Override
     public Pagination<TransferenceListOutput> execute(SearchQuery aQuery) {
-        return this.transferenceGateway.findALl(aQuery)
+        return this.transferenceGateway.findAll(aQuery)
                 .map(TransferenceListOutput::from);
     }
 }

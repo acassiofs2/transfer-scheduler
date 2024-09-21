@@ -1,4 +1,4 @@
-package com.tokio.transfer.scheduler.application.create;
+package com.tokio.transfer.scheduler.application.transference.create;
 
 import com.tokio.transfer.scheduler.application.UseCaseTest;
 import com.tokio.transfer.scheduler.application.transference.create.CreateTransferenceCommand;
