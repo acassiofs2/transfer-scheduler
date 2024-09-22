@@ -23,7 +23,7 @@ spring:
       path: /h2
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database-platform: org.hibernate.dialect.H2Dialect
   servlet:
     multipart:

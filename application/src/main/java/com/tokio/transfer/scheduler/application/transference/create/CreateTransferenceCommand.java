@@ -2,10 +2,12 @@ package com.tokio.transfer.scheduler.application.transference.create;
 
 import com.tokio.transfer.scheduler.domain.Date;
 import com.tokio.transfer.scheduler.domain.Decimal;
+import com.tokio.transfer.scheduler.domain.user.UserID;
 
 import java.time.LocalDate;
 
 public class CreateTransferenceCommand {
+    private String userId;
     private String sourceAccount;
     private String destinationAccount;
     private Decimal amount;
@@ -29,6 +31,15 @@ public class CreateTransferenceCommand {
     }
 
     private CreateTransferenceCommand(String sourceAccount, String destinationAccount, Double amount, LocalDate transferDate, boolean active) {
+        this.sourceAccount = sourceAccount;
+        this.destinationAccount = destinationAccount;
+        this.amount = Decimal.of(amount, 2);
+        this.transferDate = Date.of(transferDate);
+        this.active = active;
+    }
+
+    private CreateTransferenceCommand(String userId, String sourceAccount, String destinationAccount, Double amount, LocalDate transferDate, boolean active) {
+        this.userId = userId;
         this.sourceAccount = sourceAccount;
         this.destinationAccount = destinationAccount;
         this.amount = Decimal.of(amount, 2);
@@ -64,6 +75,21 @@ public class CreateTransferenceCommand {
             final boolean isActive
     ) {
         return new CreateTransferenceCommand(aSourceAccount, aDestinationAccount, aAmount, aTransferDate, isActive);
+    }
+
+    public static CreateTransferenceCommand with(
+            final String userId,
+            final String aSourceAccount,
+            final String aDestinationAccount,
+            final Double aAmount,
+            final LocalDate aTransferDate,
+            final boolean isActive
+    ) {
+        return new CreateTransferenceCommand(userId, aSourceAccount, aDestinationAccount, aAmount, aTransferDate, isActive);
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getSourceAccount() {

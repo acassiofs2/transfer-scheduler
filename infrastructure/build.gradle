@@ -16,6 +16,8 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
 
+    implementation 'io.vavr:vavr:0.10.4'
+
     implementation('org.springdoc:springdoc-openapi-webmvc-core:1.6.14')
     implementation('org.springdoc:springdoc-openapi-ui:1.6.14')
 

@@ -4,12 +4,14 @@ import com.tokio.transfer.scheduler.domain.Date;
 import com.tokio.transfer.scheduler.domain.Decimal;
 import com.tokio.transfer.scheduler.domain.transference.Transference;
 import com.tokio.transfer.scheduler.domain.transference.TransferenceID;
+import com.tokio.transfer.scheduler.domain.user.UserID;
 
 import java.time.Instant;
 
 public class TransferenceListOutput {
 
     private final TransferenceID id;
+    private final UserID userId;
     private final String sourceAccount;
     private final String destinationAccount;
     private final Decimal amount;
@@ -18,14 +20,16 @@ public class TransferenceListOutput {
     private final Instant createdAt;
 
     private TransferenceListOutput(
-            TransferenceID id,
-            String aSourceAccount,
-            String aDestinationAccount,
-            Decimal aAmount,
-            Date aTransferDate,
-            boolean isActive,
-            Instant aCreatedAt) {
+            final TransferenceID id,
+            final UserID userId,
+            final String aSourceAccount,
+            final String aDestinationAccount,
+            final Decimal aAmount,
+            final Date aTransferDate,
+            final boolean isActive,
+            final Instant aCreatedAt) {
         this.id = id;
+        this.userId = userId;
         this.sourceAccount = aSourceAccount;
         this.destinationAccount = aDestinationAccount;
         this.amount = aAmount;
@@ -37,6 +41,7 @@ public class TransferenceListOutput {
     public static TransferenceListOutput from(final Transference aTransference) {
         return new TransferenceListOutput(
                 aTransference.getId(),
+                aTransference.getUserID(),
                 aTransference.getSourceAccount(),
                 aTransference.getDestinationAccount(),
                 aTransference.getAmount(),
@@ -48,6 +53,10 @@ public class TransferenceListOutput {
 
     public TransferenceID getId() {
         return id;
+    }
+
+    public UserID getUserId() {
+        return userId;
     }
 
     public String getSourceAccount() {

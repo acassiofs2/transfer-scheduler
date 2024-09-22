@@ -2,6 +2,7 @@ package com.tokio.transfer.scheduler.application.transference.create;
 
 import com.tokio.transfer.scheduler.domain.transference.Transference;
 import com.tokio.transfer.scheduler.domain.transference.TransferenceGateway;
+import com.tokio.transfer.scheduler.domain.user.UserID;
 import com.tokio.transfer.scheduler.domain.validation.handler.Notification;
 import io.vavr.control.Either;
 
@@ -20,6 +21,7 @@ public class DefaultCreateTransferenceUseCase extends CreateTransferenceUseCase 
 
     @Override
     public Either<Notification, CreateTransferenceOutput> execute(CreateTransferenceCommand aCommand) {
+        final var anUserId = UserID.from(aCommand.getUserId());
         final var aSourceAccount = aCommand.getSourceAccount();
         final var aDestinationAccount = aCommand.getDestinationAccount();
         final var aAmount = aCommand.getAmount();
@@ -29,7 +31,7 @@ public class DefaultCreateTransferenceUseCase extends CreateTransferenceUseCase 
         final var notification = Notification.create();
 
         final var aTransference =
-                Transference.newTransference(aSourceAccount, aDestinationAccount, aAmount, aTransferDate, isActive);
+                Transference.newTransference(anUserId, aSourceAccount, aDestinationAccount, aAmount.getValue().doubleValue(), aTransferDate.getValue(), isActive);
         aTransference.validate(notification);
 
         return notification.hasError() ? Left(notification) : create(aTransference);
