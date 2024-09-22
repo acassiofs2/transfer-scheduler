@@ -3,6 +3,7 @@ package com.tokio.transfer.scheduler.domain.transference;
 import com.tokio.transfer.scheduler.domain.AggregateRoot;
 import com.tokio.transfer.scheduler.domain.Date;
 import com.tokio.transfer.scheduler.domain.Decimal;
+import com.tokio.transfer.scheduler.domain.user.UserID;
 import com.tokio.transfer.scheduler.domain.utils.DecimalUtils;
 import com.tokio.transfer.scheduler.domain.utils.DateUtils;
 import com.tokio.transfer.scheduler.domain.validation.ValidationHandler;
@@ -15,6 +16,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class Transference extends AggregateRoot<TransferenceID> implements Cloneable {
 
+    private UserID userID;
     private String sourceAccount;
     private String destinationAccount;
     private Decimal amount;
@@ -36,6 +38,30 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
             final Instant aDeleteDate
     ) {
         super(anID);
+        this.sourceAccount = aSourceAccount;
+        this.destinationAccount = aDestinationAccount;
+        this.amount = Decimal.of(aAmount, 2, "R$");
+        this.transferDate = Date.of(aTransferDate);
+        this.active = isActive;
+        this.createdAt = Objects.requireNonNull(aCreationDate, "'createdAt' should not be null");
+        this.updatedAt = Objects.requireNonNull(aUpdateDate, "'updatedAt' should not be null");
+        this.deletedAt = aDeleteDate;
+    }
+
+    private Transference(
+            final TransferenceID anID,
+            final UserID userID,
+            final String aSourceAccount,
+            final String aDestinationAccount,
+            final Double aAmount,
+            final LocalDate aTransferDate,
+            final boolean isActive,
+            final Instant aCreationDate,
+            final Instant aUpdateDate,
+            final Instant aDeleteDate
+    ) {
+        super(anID);
+        this.userID = userID;
         this.sourceAccount = aSourceAccount;
         this.destinationAccount = aDestinationAccount;
         this.amount = Decimal.of(aAmount, 2, "R$");
@@ -91,6 +117,22 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
     }
 
     public static Transference newTransference(
+            final UserID userID,
+            final String aSourceAccount,
+            final String aDestinationAccount,
+            final Double aAmount,
+            final LocalDate aTransferDate,
+            final boolean isActive
+    ) {
+        final var id = TransferenceID.unique();
+        final var now = DateUtils.nowInstant();
+        final var deletedAt = isActive ? null : now;
+        return new Transference(
+                id, userID, aSourceAccount, aDestinationAccount, aAmount, aTransferDate, isActive, now, now, deletedAt
+        );
+    }
+
+    public static Transference newTransference(
             final String aSourceAccount,
             final String aDestinationAccount,
             final Double aAmount,
@@ -104,6 +146,32 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
                 id, aSourceAccount, aDestinationAccount, aAmount, aTransferDate, isActive, now, now, deletedAt
         );
     }
+
+    public static Transference with(
+            final TransferenceID id,
+            final UserID userId,
+            final String sourceAccount,
+            final String destinationAccount,
+            final Double amount,
+            final LocalDate transferDate,
+            final boolean active,
+            final Instant createdAt,
+            final Instant updatedAt,
+            final Instant deletedAt
+    ) {
+        return new Transference(
+                id,
+                userId,
+                sourceAccount,
+                destinationAccount,
+                amount,
+                transferDate,
+                active,
+                createdAt,
+                updatedAt,
+                deletedAt
+        );
+    };
 
     public static Transference newTransference(
             final String aSourceAccount,
@@ -133,6 +201,10 @@ public class Transference extends AggregateRoot<TransferenceID> implements Clone
         return new Transference(
                 id, aSourceAccount, aDestinationAccount, aAmount, aTransferDate, isActive, now, now, deletedAt
         );
+    }
+
+    public UserID getUserID() {
+        return userID;
     }
 
     public String getSourceAccount() {
