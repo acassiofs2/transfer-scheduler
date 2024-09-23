@@ -1,19 +1,9 @@
 <script lang="ts">
-import ILista from '../interfaces/ILista';
-import { obterTransferencias } from '../http';
 import ListaTransferencias from "./ListaTransferencias.vue";
 
 
 export default {
     
-    data() {
-        return {
-            lista: [] as ILista[],
-        };
-    },
-    async created() {
-        this.lista = await obterTransferencias();
-    },
     components: { ListaTransferencias },
     methods: {
         
@@ -23,7 +13,7 @@ export default {
 
 <template>
   <main class="conteudo-principal">
-    <ListaTransferencias :lista="lista" />
+    <ListaTransferencias />
   </main>
 </template>
 

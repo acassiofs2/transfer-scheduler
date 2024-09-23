@@ -3,11 +3,11 @@
       <div class="apresentacao">
         
         <p class="cabecalho-lg frase-cabecalho">
-          <span class="texto-verde">Transferências</span>
+          <span>Transferências</span>
         </p>
   
         <p class="subtitulo-lg">
-          
+          <span>Sistema de agendamento de transferências bancárias</span>
         </p>
       </div>
   
@@ -16,7 +16,7 @@
   
   <style scoped>
   .banner {
-    padding: 4rem 7.5rem;
+    padding: 2rem 7.5rem;
     color: var(--creme);
   
     display: flex;
@@ -31,7 +31,7 @@
   }
   
   .frase-cabecalho {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
   
   .texto-verde {

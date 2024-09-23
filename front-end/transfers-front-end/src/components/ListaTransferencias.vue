@@ -1,12 +1,39 @@
 <script lang="ts">
-import type { PropType } from 'vue';
+import { ref } from 'vue';
 import ILista from '../interfaces/ILista';
+import ModalForm from '../components/ModalForm.vue';
+import ITransferencia from '../interfaces/ITransferencia';
+import { obterTransferencias } from '../http';
+import { criarTransferencia } from '../http';
 
 export default {
-  components: {  },
-  props: {
-    lista: { type: Array as PropType<ILista[]>, required: true }
+  components: { ModalForm },
+  data() {
+    const isModalOpen = ref(false);
+
+    const openModal = () => {
+      isModalOpen.value = true;
+    };
+
+    const closeModal = async () => {
+        this.lista = await obterTransferencias();
+        isModalOpen.value = false;
+    };
+
+    const adicionarRegistro = (registro: ITransferencia): Promise<Response> => {
+        return criarTransferencia(registro);
+    };
+    return {
+        lista: [] as ILista[],
+        isModalOpen,
+        openModal, 
+        closeModal,
+        adicionarRegistro
+    };
   },
+  async created() {
+    this.lista = await obterTransferencias();
+  }
 }
 </script>
 
@@ -19,8 +46,8 @@ export default {
     <div class="lista-container">
         <table v-if="lista.total > 0" class="lista-transferencias">
             <thead>
-                <th>Conta Origem</th>
-                <th>Conta Destino</th>
+                <th>Conta de Origem</th>
+                <th>Conta de Destino</th>
                 <th>Valor (R$)</th>
                 <th>Taxa (R$)</th>
                 <th>Data da transferência</th>
@@ -51,6 +78,14 @@ export default {
             Nenhuma transferência agendada
         </p>
     </div>
+    <div class="container-add-transferencia">
+        <button @click="openModal" class="btn-adicionar">Agendar nova transferência</button>
+    </div>
+    <ModalForm
+      :isOpen="isModalOpen"
+      :closeModal="closeModal"
+      :adicionarRegistro="adicionarRegistro"
+    />
   </section>
 </template>
 
@@ -81,16 +116,35 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.lista-transferencias {
+    border-spacing: 15px;
+}
+
 .lista-item {
   padding: 10px;
   margin: 5px 5px;
   background-color: #fff;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 4px;
   transition: background-color 0.3s;
 }
 
-.lista-item:hover {
-  background-color: #f1f1f1;
+.container-add-transferencia {
+  padding: 20px 0;
 }
+
+.btn-adicionar {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-adicionar:hover {
+  background-color: #0056b3;
+}
+
 </style>
