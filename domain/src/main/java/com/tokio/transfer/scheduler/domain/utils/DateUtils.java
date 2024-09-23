@@ -49,4 +49,8 @@ public final class DateUtils {
     public static LocalDate of(String value) {
         return convertStringToLocalDateTime(value);
     }
+
+    public static LocalDate of(Instant value) {
+        return LocalDate.ofInstant(value, ZoneId.of("UTC-3"));
+    }
 }

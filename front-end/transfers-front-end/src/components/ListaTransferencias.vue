@@ -43,12 +43,12 @@ export default {
                     <span>{{ transferencia.transfer_date }}</span>
                 </td>
                 <td class="lista-item">
-                    <span>{{  }}</span>
+                    <span>{{ transferencia.created_at }}</span>
                 </td>
             </tr>
         </table>
         <p v-else class="paragrafo lista-vazia">
-            Não existem transferências
+            Nenhuma transferência agendada
         </p>
     </div>
   </section>
