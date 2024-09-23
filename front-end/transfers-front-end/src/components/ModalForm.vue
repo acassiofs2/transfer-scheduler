@@ -139,6 +139,7 @@
   .btn {
     padding: 10px 20px;
     margin-right: 15px;
+    margin-top: 15px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -156,6 +157,7 @@
 
   .list-errors {
     color: red;
+    margin-top: 10px;
   }
   </style>
   
