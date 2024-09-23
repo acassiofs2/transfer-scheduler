@@ -1,8 +1,8 @@
 <script lang="ts">
 import { ref } from 'vue';
-import ILista from '../interfaces/ILista';
+import type ILista from '../interfaces/ILista';
 import ModalForm from '../components/ModalForm.vue';
-import ITransferencia from '../interfaces/ITransferencia';
+import type ITransferencia from '../interfaces/ITransferencia';
 import { obterTransferencias } from '../http';
 import { criarTransferencia } from '../http';
 
@@ -24,14 +24,14 @@ export default {
         return criarTransferencia(registro);
     };
     return {
-        lista: [] as ILista[],
+        lista: {} as ILista,
         isModalOpen,
         openModal, 
         closeModal,
         adicionarRegistro
     };
   },
-  async created() {
+  async mounted() {
     this.lista = await obterTransferencias();
   }
 }
@@ -53,7 +53,7 @@ export default {
                 <th>Data da transferência</th>
                 <th>Data de agendamento</th>
             </thead>
-            <tr v-for="transferencia in lista.items" :key="transferencia">
+            <tr v-for="(transferencia, index) in lista.items" :key="index">
                 <td class="lista-item">
                     <span>{{ transferencia.source_account }}</span>
                 </td>

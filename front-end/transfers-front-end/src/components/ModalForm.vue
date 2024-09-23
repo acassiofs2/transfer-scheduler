@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isOpen" class="modal-overlay" @click="closeModal">
+    <div v-if="isOpen" class="modal-overlay" @click="() => closeModal()">
       <div class="modal-content" @click.stop>
         <h2>Agendar Transferência</h2>
         <form @submit.prevent="handleSubmit" class="form-registro">
@@ -20,11 +20,11 @@
             <input type="date" id="transfer-date" v-model="transferencia.transfer_date" required />
           </div>
           <button type="submit" class="btn">Adicionar</button>
-          <button type="button" class="btn-cancel" @click="closeModal">Cancelar</button>
+          <button type="button" class="btn-cancel" @click="() => closeModal()">Cancelar</button>
         </form>
         <ul v-if="errors.length > 0" class="list-errors">
             <li v-for="(error, index) in errors" :key="index">
-                {{ error }}
+                {{ error.message }}
             </li>
         </ul>
       </div>
@@ -33,7 +33,8 @@
   
   <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import IError from '../interfaces/IError';
+  import type { PropType } from 'vue';
+  import type IError from '../interfaces/IError';
   
   export default defineComponent({
     props: {
@@ -42,7 +43,7 @@
         required: true
       },
       closeModal: {
-        type: Function,
+        type: Function as PropType<Function>,
         required: true
       },
       adicionarRegistro: {
@@ -51,7 +52,7 @@
       }
     },
     setup(props) {
-        const errors = ref([]);
+        const errors = ref<IError[]>([]);
         const cleanAndCloseModal = () => {
             transferencia.value = 
             { 
@@ -66,7 +67,7 @@
         }
 
         const showErrors = (e: any) => {
-            e.errors.forEach((err: IError) => errors.value.push(err.message));
+            e.errors.forEach((err: IError) => errors.value.push(err));
         }
       
         const transferencia = ref(
