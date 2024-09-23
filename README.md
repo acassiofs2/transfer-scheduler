@@ -42,7 +42,7 @@ cd transfer-scheduler/
 
 3. Gerar Jar da aplicação:
 ```
-./gradlew bootJar
+gradle bootJar
 ```
 4. Subir a aplicação com Docker:
 ```shell
