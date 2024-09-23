@@ -35,16 +35,21 @@
 git clone https://github.com/acassiofs2/transfer-scheduler.git
 ```
 
-2. Gerar Jar da aplicação:
+2. Mudar para o diretório do projeto
+```
+cd .\transfer-scheduler\
+```
+
+3. Gerar Jar da aplicação:
 ```
 ./gradlew bootJar
 ```
-3. Subir a aplicação com Docker:
+4. Subir a aplicação com Docker:
 ```shell
 docker-compose up -d
 ```
 
-3. Acessar URL:
+5. Acessar URL:
 ```
 http://localhost
 ```
