@@ -15,6 +15,7 @@ public class TransferenceListOutput {
     private final String sourceAccount;
     private final String destinationAccount;
     private final Decimal amount;
+    private final Decimal tax;
     private final Date transferDate;
     private final boolean active;
     private final Instant createdAt;
@@ -25,6 +26,7 @@ public class TransferenceListOutput {
             final String aSourceAccount,
             final String aDestinationAccount,
             final Decimal aAmount,
+            final Decimal aTax,
             final Date aTransferDate,
             final boolean isActive,
             final Instant aCreatedAt) {
@@ -33,6 +35,7 @@ public class TransferenceListOutput {
         this.sourceAccount = aSourceAccount;
         this.destinationAccount = aDestinationAccount;
         this.amount = aAmount;
+        this.tax = aTax;
         this.transferDate = aTransferDate;
         this.active = isActive;
         this.createdAt = aCreatedAt;
@@ -45,6 +48,7 @@ public class TransferenceListOutput {
                 aTransference.getSourceAccount(),
                 aTransference.getDestinationAccount(),
                 aTransference.getAmount(),
+                aTransference.getTax(),
                 aTransference.getTransferDate(),
                 aTransference.isActive(),
                 aTransference.getCreatedAt()
@@ -69,6 +73,10 @@ public class TransferenceListOutput {
 
     public Decimal getAmount() {
         return amount;
+    }
+
+    public Decimal getTax() {
+        return tax;
     }
 
     public Date getTransferDate() {

@@ -14,7 +14,7 @@ public final class DecimalUtils {
         BigDecimal result =
                 value.multiply(
                         BigDecimal.valueOf(percentage)
-                        .divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)
+                        .divide(BigDecimal.valueOf(100), 5, RoundingMode.HALF_UP)
                 )
                 .setScale(2, RoundingMode.HALF_UP);
         return Decimal.of(result, 1);

@@ -12,6 +12,7 @@ public interface TransferenceApiPresenter {
                 output.getSourceAccount(),
                 output.getDestinationAccount(),
                 output.getAmount().getValue(),
+                output.getTax(),
                 output.getTransferDate().getValue(),
                 output.isActive(),
                 output.getCreatedAt()

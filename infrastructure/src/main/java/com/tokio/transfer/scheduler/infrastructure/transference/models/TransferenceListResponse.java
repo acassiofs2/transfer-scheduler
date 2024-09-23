@@ -3,9 +3,7 @@ package com.tokio.transfer.scheduler.infrastructure.transference.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tokio.transfer.scheduler.domain.Date;
 import com.tokio.transfer.scheduler.domain.Decimal;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -25,6 +23,8 @@ public class TransferenceListResponse {
     private String destinationAccount;
     @JsonProperty("amount")
     private String amount;
+    @JsonProperty("tax")
+    private String tax;
     @JsonProperty("transfer_date")
     private String transferDate;
     @JsonProperty("is_active")
@@ -38,6 +38,7 @@ public class TransferenceListResponse {
             final String sourceAccount,
             final String destinationAccount,
             final BigDecimal amount,
+            final Decimal tax,
             final LocalDate transferDate,
             final boolean active,
             final Instant createdAt
@@ -47,6 +48,7 @@ public class TransferenceListResponse {
         this.sourceAccount = sourceAccount;
         this.destinationAccount = destinationAccount;
         this.amount = Decimal.of(amount, 2).toString();
+        this.tax = tax.toString();
         this.transferDate = Date.of(transferDate).toString();
         this.active = active;
         this.createdAt = Date.of(createdAt).toString();

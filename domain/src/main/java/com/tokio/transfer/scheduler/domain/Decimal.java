@@ -2,6 +2,9 @@ package com.tokio.transfer.scheduler.domain;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Decimal extends ValueObject<BigDecimal> {
@@ -40,7 +43,12 @@ public class Decimal extends ValueObject<BigDecimal> {
 
     @Override
     public String toString() {
-        return symbol != null && !symbol.isEmpty() ? symbol + " " + value : value.toString();
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("pt", "BR"));
+        symbols.setDecimalSeparator(',');
+        symbols.setGroupingSeparator('.');
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
+        final var v = decimalFormat.format(value);
+        return symbol != null && !symbol.isEmpty() ? symbol + " " + v : v;
     }
 
     @Override

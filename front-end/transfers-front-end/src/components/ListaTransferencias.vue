@@ -21,8 +21,8 @@ export default {
             <thead>
                 <th>Conta Origem</th>
                 <th>Conta Destino</th>
-                <th>Valor</th>
-                <th>Taxa</th>
+                <th>Valor (R$)</th>
+                <th>Taxa (R$)</th>
                 <th>Data da transferência</th>
                 <th>Data de agendamento</th>
             </thead>
@@ -37,7 +37,7 @@ export default {
                     <span>{{ transferencia.amount }}</span>
                 </td>
                 <td class="lista-item">
-                    <span>{{ }}</span>
+                    <span>{{ transferencia.tax }}</span>
                 </td>
                 <td class="lista-item">
                     <span>{{ transferencia.transfer_date }}</span>
