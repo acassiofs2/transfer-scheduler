@@ -1,12 +1,10 @@
 package com.tokio.transfer.scheduler.application.transference.create;
 
 import com.tokio.transfer.scheduler.application.UseCaseTest;
-import com.tokio.transfer.scheduler.application.transference.create.CreateTransferenceCommand;
-import com.tokio.transfer.scheduler.application.transference.create.DefaultCreateTransferenceUseCase;
 import com.tokio.transfer.scheduler.domain.Date;
 import com.tokio.transfer.scheduler.domain.Decimal;
-import com.tokio.transfer.scheduler.domain.transference.Transference;
 import com.tokio.transfer.scheduler.domain.transference.TransferenceGateway;
+import com.tokio.transfer.scheduler.domain.user.UserID;
 import com.tokio.transfer.scheduler.domain.utils.DateUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,6 +34,7 @@ public class CreateTransferenceUseCaseTest extends UseCaseTest {
 
     @Test
     public void givenAValidCommand_whenCallsCreateTransference_shouldReturnTransferenceId() {
+        final var userId = UserID.unique();
         final var expectedSourceAccount = "0123456789";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
@@ -43,7 +42,7 @@ public class CreateTransferenceUseCaseTest extends UseCaseTest {
         final var expectedIsActive = true;
 
         final var aCommand =
-                CreateTransferenceCommand.with(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
+                CreateTransferenceCommand.with(userId.getValue(), expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
 
         when(transferenceGateway.create(any()))
                 .thenAnswer(returnsFirstArg());
@@ -64,16 +63,17 @@ public class CreateTransferenceUseCaseTest extends UseCaseTest {
 
     @Test
     public void givenATaxNotApplicable_whenCallsCreateTransference_thenShouldReturnDomainException() {
+        final var userId = UserID.unique();
         final var expectedTransferDate = DateUtils.now().plusDays(81);
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "Tax is not applicable";
+        final var expectedErrorMessage = "Nenhuma taxa aplicável para a data escolhida";
         final var expectedSourceAccount = "0123456789";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
         final var expectedIsActive = true;
 
         final var aCommand =
-                CreateTransferenceCommand.with(expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
+                CreateTransferenceCommand.with(userId.getValue(), expectedSourceAccount, expectedDestinationAccount, expectedAmount, expectedTransferDate, expectedIsActive);
 
         final var notification = useCase.execute(aCommand).getLeft();
 

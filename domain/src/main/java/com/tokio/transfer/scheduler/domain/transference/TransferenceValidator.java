@@ -25,11 +25,11 @@ public class TransferenceValidator extends Validator {
     private void checkTransferDateContraints() {
         final var transferDate = this.transference.getTransferDate();
         if (transferDate == null) {
-            this.validationHandler().append(new Error("'transferDate' should not be null"));
+            this.validationHandler().append(new Error("A data de transferência deve ser informada"));
             return;
         }
         if (transferDate.getValue().isBefore(DateUtils.now())) {
-            this.validationHandler().append(new Error("'transferDate' should not be earlier than the current date"));
+            this.validationHandler().append(new Error("A data de transferência deve ser maior ou igual à data atual"));
         }
     }
 
@@ -37,26 +37,26 @@ public class TransferenceValidator extends Validator {
         final var sourceAccount = this.transference.getSourceAccount();
         final var destinationAccount = this.transference.getDestinationAccount();
         if (sourceAccount == null) {
-            this.validationHandler().append(new Error("'sourceAccount' should not be null"));
+            this.validationHandler().append(new Error("A Conta de Origem deve ser informada"));
             return;
         }
         if (!sourceAccount.matches(ACCOUNT_PATTERN)) {
-            this.validationHandler().append(new Error("'sourceAccount' should match the pattern 'XXXXXXXXXX'"));
+            this.validationHandler().append(new Error("A Conta de Origem deve estar no padrão 'XXXXXXXXXX'"));
             return;
         }
         if (destinationAccount == null) {
-            this.validationHandler().append(new Error("'destinationAccount' should not be null"));
+            this.validationHandler().append(new Error("A Conta de Destino deve ser informada"));
             return;
         }
         if (!destinationAccount.matches(ACCOUNT_PATTERN)) {
-            this.validationHandler().append(new Error("'destinationAccount' should match the pattern 'XXXXXXXXXX'"));
+            this.validationHandler().append(new Error("A Conta de Destino deve estar no padrão 'XXXXXXXXXX'"));
         }
     }
 
     private void checkTaxConstraints() {
         final var tax = this.transference.calculateTax();
         if (tax == null) {
-            this.validationHandler().append(new Error("Tax is not applicable"));
+            this.validationHandler().append(new Error("Nenhuma taxa aplicável para a data escolhida"));
         }
     }
 }

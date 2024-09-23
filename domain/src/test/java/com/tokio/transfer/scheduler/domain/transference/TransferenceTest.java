@@ -66,7 +66,7 @@ public class TransferenceTest {
     public void givenAnInvalidNullTransferDate_whenCallNewTransferenceAndValidate_thenShouldReceiveError() {
         final String expectedTransferDate = null;
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'transferDate' should not be null";
+        final var expectedErrorMessage = "A data de transferência deve ser informada";
         final var expectedSourceAccount = "0123456789";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
@@ -86,7 +86,7 @@ public class TransferenceTest {
     public void givenAnInvalidRetroactiveTransferDate_whenCallNewTransferenceAndValidate_thenShouldReceiveError() {
         final String expectedTransferDate = "01/01/2024";
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'transferDate' should not be earlier than the current date";
+        final var expectedErrorMessage = "A data de transferência deve ser maior ou igual à data atual";
         final var expectedSourceAccount = "0123456789";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
@@ -106,7 +106,7 @@ public class TransferenceTest {
     public void givenAnInvalidAccount_whenCallNewTransferenceAndValidate_thenShouldReceiveError() {
         final var expectedTransferDate = DateUtils.now().plusDays(11);
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "'sourceAccount' should match the pattern 'XXXXXXXXXX'";
+        final var expectedErrorMessage = "A Conta de Origem deve estar no padrão 'XXXXXXXXXX'";
         final var expectedSourceAccount = "01234";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
@@ -126,7 +126,7 @@ public class TransferenceTest {
     public void givenATaxNotApplicable_whenCallNewTransferenceAndValidate_thenShouldReceiveError() {
         final var expectedTransferDate = DateUtils.now().plusDays(81);
         final var expectedErrorCount = 1;
-        final var expectedErrorMessage = "Tax is not applicable";
+        final var expectedErrorMessage = "Nenhuma taxa aplicável para a data escolhida";
         final var expectedSourceAccount = "0123456789";
         final var expectedDestinationAccount = "9876543210";
         final var expectedAmount = 99.99;
