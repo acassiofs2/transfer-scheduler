@@ -37,7 +37,7 @@ git clone https://github.com/acassiofs2/transfer-scheduler.git
 
 2. Mudar para o diretório do projeto
 ```
-cd .\transfer-scheduler\
+cd transfer-scheduler/
 ```
 
 3. Gerar Jar da aplicação:
